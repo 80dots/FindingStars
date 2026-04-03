@@ -47,13 +47,8 @@ namespace FindingStars
             // AttitudeSensor의 데이터(오른손 좌표계)를 유니티(왼손 좌표계)에 맞게 변환합니다.
             // z와 w의 부호를 반전시키는 것이 일반적인 변환 방식입니다.
             Quaternion attitude = context.ReadValue<Quaternion>();
-            Quaternion correctedAttitude = new Quaternion(attitude.x, attitude.y, -attitude.z, -attitude.w);
-            
-            // 스마트폰을 세웠을 때(Portrait) 정면을 바라보게 하려면 x축 90도 회전이 필요할 수 있으나,
-            // 사용자가 원치 않는 90도 기울어짐을 방지하기 위해 기본 회전을 적용하지 않거나 조정합니다.
-            // 만약 카메라가 바닥이나 하늘을 보고 있다면 아래 주석을 해제하여 조정할 수 있습니다.
-            // transform.localRotation = Quaternion.Euler(90, 0, 0) * correctedAttitude;
-            transform.localRotation = correctedAttitude;
+            Vector3 eulerAngles = attitude.eulerAngles;
+            transform.localRotation = Quaternion.Euler(eulerAngles.x, 0f, 0f);
         }
 
 #if UNITY_EDITOR
