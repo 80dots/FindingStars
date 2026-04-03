@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 001b9c4410f6cd24e9b99c3635c4fb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FindingStars.CameraControl
+  gyroSensor: {fileID: -9188210964822620680, guid: 51bfb4d6186c11143a38544e02ff7c6f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
