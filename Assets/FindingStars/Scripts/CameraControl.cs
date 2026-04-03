@@ -42,50 +42,32 @@ namespace FindingStars
 
         private void OnGyroPerformedHandler(InputAction.CallbackContext context)
         {
-            // if (AttitudeSensor.current == null) return;
-            // Quaternion attitude = AttitudeSensor.current.attitude.ReadValue();
+            if (context.valueType != typeof(Quaternion)) return;
+
+            // AttitudeSensor의 데이터(오른손 좌표계)를 유니티(왼손 좌표계)에 맞게 변환합니다.
+            // z와 w의 부호를 반전시키는 것이 일반적인 변환 방식입니다.
             Quaternion attitude = context.ReadValue<Quaternion>();
-            transform.localRotation = Quaternion.Euler(90, 0, 0) * new Quaternion(attitude.x, attitude.y, -attitude.z, -attitude.w);
+            Quaternion correctedAttitude = new Quaternion(attitude.x, attitude.y, -attitude.z, -attitude.w);
+            
+            // 스마트폰을 세웠을 때(Portrait) 정면을 바라보게 하려면 x축 90도 회전이 필요할 수 있으나,
+            // 사용자가 원치 않는 90도 기울어짐을 방지하기 위해 기본 회전을 적용하지 않거나 조정합니다.
+            // 만약 카메라가 바닥이나 하늘을 보고 있다면 아래 주석을 해제하여 조정할 수 있습니다.
+            // transform.localRotation = Quaternion.Euler(90, 0, 0) * correctedAttitude;
+            transform.localRotation = correctedAttitude;
         }
 
-//         private void Start()
-//         {
-//             // 장치에서 자이로스코프(Attitude Sensor)를 지원하는지 확인하고 활성화합니다.
-//             if (AttitudeSensor.current != null)
-//             {
-//                 InputSystem.EnableDevice(AttitudeSensor.current);
-//             }
-//             else
-//             {
-//                 Debug.LogWarning("이 장치는 자이로스코프(Attitude Sensor)를 지원하지 않습니다. Editor에서는 마우스 오른쪽 버튼으로 회전을 시뮬레이션할 수 있습니다.");
-//             }
-//         }
-//
-//         private void Update()
-//         {
-//             // 1. 센서가 활성화되어 있는지 확인합니다 (실제 장치).
-//             if (gyroSensor != null && AttitudeSensor.current.enabled)
-//             {
-//                 // 센서로부터 현재 장치의 태도(Attitude) 쿼터니언 값을 읽어옵니다.
-//                 Quaternion attitude = AttitudeSensor.current.attitude.ReadValue();
-//
-//                 // 센서 데이터(오른손 좌표계)를 Unity(왼손 좌표계)에 맞게 변환합니다. (z와 w의 부호를 반전)
-//                 // 장치를 세웠을 때 카메라가 정면(휴대폰 뒷면 방향)을 바라보게 하기 위해 x축으로 90도 회전 오프셋을 적용합니다.
-//                 transform.localRotation = Quaternion.Euler(90, 0, 0) * new Quaternion(attitude.x, attitude.y, -attitude.z, -attitude.w);
-//             }
-// #if UNITY_EDITOR
-//             // 2. Editor 환경에서 마우스 오른쪽 버튼을 이용한 회전 시뮬레이션.
-//             else
-//             {
-//                 if (Mouse.current != null && Mouse.current.rightButton.isPressed)
-//                 {
-//                     Vector2 delta = Mouse.current.delta.ReadValue();
-//                     _yaw += delta.x * 0.1f;
-//                     _pitch -= delta.y * 0.1f;
-//                     transform.localRotation = Quaternion.Euler(_pitch, _yaw, 0);
-//                 }
-//             }
-// #endif
-        // }
+#if UNITY_EDITOR
+        private void Update()
+        {
+            // 에디터 환경에서 마우스 오른쪽 버튼을 이용한 회전 시뮬레이션.
+            if (Mouse.current != null && Mouse.current.rightButton.isPressed)
+            {
+                Vector2 delta = Mouse.current.delta.ReadValue();
+                _yaw += delta.x * 0.1f;
+                _pitch -= delta.y * 0.1f;
+                transform.localRotation = Quaternion.Euler(_pitch, _yaw, 0);
+            }
+        }
+#endif
     }
 }
