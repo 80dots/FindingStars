@@ -7,13 +7,14 @@
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
-/[Bb]uilds/
+/[Bb]uild/**
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
 
 # Exclude apk file in Build folder
-![Bb]uild/*.apk
+!/[Bb]uild/
+!/[Bb]uild/*.apk
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
@@ -70,7 +71,7 @@ sysinfo.txt
 mono_crash.*
 
 # Builds
-*.apk
+#*.apk
 *.aab
 *.unitypackage
 *.unitypackage.meta
