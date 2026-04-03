@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f3ab770bf5faa4e847925418d5cd36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FindingStars.Main
-  tapAction: {fileID: -5572712622175706608, guid: 51bfb4d6186c11143a38544e02ff7c6f, type: 3}
+  actionReference: {fileID: -5572712622175706608, guid: 51bfb4d6186c11143a38544e02ff7c6f, type: 3}
   playSceneName: Play
 --- !u!4 &1441843722
 Transform:
@@ -841,7 +841,7 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1441843722}
   - {fileID: 330585546}
   - {fileID: 1929530598}
   - {fileID: 41510068}
-  - {fileID: 1441843722}
