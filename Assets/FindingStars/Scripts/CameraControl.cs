@@ -11,7 +11,7 @@ namespace FindingStars
     /// </summary>
     public class CameraControl : MonoBehaviour
     {
-        [SerializeField] private InputActionReference gyroSensor;
+        [SerializeField] private InputActionReference attSensor;
 #if UNITY_EDITOR
         private float _yaw = 0.0f;
         private float _pitch = 0.0f;
@@ -19,25 +19,32 @@ namespace FindingStars
 
         private void OnEnable()
         {
-            gyroSensor.action.Enable();
-            gyroSensor.action.performed += OnGyroPerformedHandler;
-            
+            if (AttitudeSensor.current != null)
+            {
+                InputSystem.EnableDevice(AttitudeSensor.current);
+            }
+
+            if (attSensor != null && attSensor.action != null)
+            {
+                attSensor.action.performed += OnGyroPerformedHandler;
+                attSensor.action.Enable();
+            }
         }
 
         private void OnDisable()
         {
-            gyroSensor.action.Disable();
-            gyroSensor.action.performed -= OnGyroPerformedHandler;
-        }
-
-        private void Start()
-        {
-            InputSystem.EnableDevice(Gyroscope.current);
+            if (attSensor != null && attSensor.action != null)
+            {
+                attSensor.action.performed -= OnGyroPerformedHandler;
+                attSensor.action.Disable();
+            }
         }
 
         private void OnGyroPerformedHandler(InputAction.CallbackContext context)
         {
-            Quaternion attitude = AttitudeSensor.current.attitude.ReadValue();
+            // if (AttitudeSensor.current == null) return;
+            // Quaternion attitude = AttitudeSensor.current.attitude.ReadValue();
+            Quaternion attitude = context.ReadValue<Quaternion>();
             transform.localRotation = Quaternion.Euler(90, 0, 0) * new Quaternion(attitude.x, attitude.y, -attitude.z, -attitude.w);
         }
 

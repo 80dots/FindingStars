@@ -51,7 +51,7 @@
                 {
                     "name": "",
                     "id": "0d844503-a5f5-4ca0-979d-37babdab41c3",
-                    "path": "<Gyroscope>/angularVelocity",
+                    "path": "<AttitudeSensor>/attitude",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Control",
