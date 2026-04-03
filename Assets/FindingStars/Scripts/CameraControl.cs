@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Gyroscope = UnityEngine.InputSystem.Gyroscope;
 
 namespace FindingStars
 {
@@ -28,7 +29,12 @@ namespace FindingStars
             gyroSensor.action.Disable();
             gyroSensor.action.performed -= OnGyroPerformedHandler;
         }
-        
+
+        private void Start()
+        {
+            InputSystem.EnableDevice(Gyroscope.current);
+        }
+
         private void OnGyroPerformedHandler(InputAction.CallbackContext context)
         {
             Quaternion attitude = AttitudeSensor.current.attitude.ReadValue();
